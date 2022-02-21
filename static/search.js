@@ -1,4 +1,5 @@
 const numInput = document.getElementById('numinput');
+const resultEl = document.getElementById('result');
 
 numInput.addEventListener('input', () => {
   numInput.setCustomValidity('');
@@ -16,7 +17,6 @@ numInput.addEventListener('invalid', () => {
 
 search = async function () {
   try {
-    const resultEl = document.getElementById('result');
     if (isNaN(numInput.value)) {
       resultEl.innerHTML = 'Query should be a number';
       return;
@@ -26,19 +26,27 @@ search = async function () {
       return;
     }
     resultEl.innerHTML = 'Searching...';
-    const response = await fetch('/', {
-      method: 'POST', body: JSON.stringify({ query: numInput.value }), headers: { 'Content-type': 'application/json' }
-    });
+    const response = await fetch(`/search?q=${numInput.value}`);
     const reply = await response.json();
     if (response.status !== 200) {
       throw new Error(reply.error);
     }
     resultEl.innerHTML =
       `<b>Query: </b>${reply.query}<br>
-                    <b>Is it spam? </b>${reply.spamStatus}`;
+                    <b>Is it spam? </b>
+                    <span id="spam"></span>`;
+    const spamEl = document.getElementById('spam');
+    if (reply.spamStatus === true) {
+      spamEl.innerHTML = 'Yes';
+      spamEl.style.backgroundColor = 'red';
+    }
+    else {
+      spamEl.innerHTML = 'No';
+      spamEl.style.backgroundColor = 'green';
+    }
     numInput.value = '';
   } catch (error) {
-    document.getElementById('result').innerHTML = error.message;
+    resultEl.innerHTML = error.message;
   }
 }
 
