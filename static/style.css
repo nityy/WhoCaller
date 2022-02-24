@@ -9,7 +9,7 @@ footer {
 body {
     text-align: center;
     font-family: "Noto Sans", "Liberation Sans", Helvetica, sans-serif;
-    background-color:darkslategrey;
+    background-color:#3b3a30;
     color: white;
 }
 
@@ -35,22 +35,25 @@ h2 {
     padding-top: 30px;
 }
 
-#button {
-    color: white;
-    background-color: grey;
+#searchButton {
+    background-color: #c0ded9;
     cursor: pointer;
     height: 30px;
     width: 100%;
     border: 3px solid;
     box-sizing: border-box;
-    border-color: grey;
+    border-color: #c0ded9;
+}
+
+#searchButton:disabled {
+    cursor: not-allowed
 }
 
 #numinput {
-    background-color: darkslategrey;
+    background-color: #3b3a30;
     height: 30px;
     border: 3px solid;
-    border-color: grey;
+    border-color: #c0ded9;
     width: 100%;
     padding: 5px;
     box-sizing: border-box;

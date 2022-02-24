@@ -1,21 +1,18 @@
 const numInput = document.getElementById('numinput');
 const resultEl = document.getElementById('result');
+const searchButton = document.getElementById('searchButton');
 
 const re = /^[0-9]{2,17}$/;
 
 search = async function () {
   try {
+    searchButton.disabled = true;
+    searchButton.innerText = 'Searching...';
     if (numInput.value === '') {
-      resultEl.innerHTML = 'Input can not be empty';
-      return;
+      throw new Error('Input can not be empty');
     }
     if (!re.test(numInput.value)) {
-      resultEl.innerHTML = 'Input must be a number and between 2 to 17 digits long';
-      return;
-    }
-    if (numInput.value === '') {
-      resultEl.innerHTML = 'Input can not be empty';
-      return;
+      throw new Error('Input must be a number and between 2 to 17 digits long');
     }
     resultEl.innerHTML = 'Searching...';
     const response = await fetch(`/search?q=${numInput.value}`);
@@ -38,7 +35,10 @@ search = async function () {
     }
   } catch (error) {
     resultEl.innerHTML = error.message;
+  } finally {
+    searchButton.disabled = false;
+    searchButton.innerText = 'Search';
   }
 }
 
-document.getElementById('button').addEventListener('click', search);
+searchButton.addEventListener('click', search);
