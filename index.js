@@ -23,7 +23,13 @@ app.get('/search', (req, res) => {
   }
   const cc = req.query.cc || 'IN'; // hardcoded for now
   const url = `https://search5-noneu.truecaller.com/v2/search?q=${num}&countryCode=${cc}&type=4&encoding=json`;
-  const conf = { headers: { 'authorization': `Bearer ${process.env.TOKEN}` } };
+  const conf = {
+    headers:
+    {
+      'authorization': `Bearer ${process.env.TOKEN}`,
+      'User-Agent': 'Truecaller/12.15.6 (Android;10)'
+    }
+  };
   axios.get(url, conf)
     .then((response) => {
       if (response.status !== 200) {
