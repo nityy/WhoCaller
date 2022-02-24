@@ -1,28 +1,16 @@
 const numInput = document.getElementById('numinput');
 const resultEl = document.getElementById('result');
 
-numInput.addEventListener('input', () => {
-  numInput.setCustomValidity('');
-  numInput.checkValidity();
-  numInput.reportValidity();
-})
-
-numInput.addEventListener('invalid', () => {
-  if (numInput.value == '') {
-    numInput.setCustomValidity(' ');
-  } else {
-    numInput.setCustomValidity('Input should only contain digits');
-  }
-})
+const re = /^[0-9]{2,17}$/;
 
 search = async function () {
   try {
-    if (isNaN(numInput.value)) {
-      resultEl.innerHTML = 'Query should be a number';
+    if (!re.test(numInput.value)) {
+      resultEl.innerHTML = 'Input can not be empty, must be a number and between 2 to 17 digits long';
       return;
     }
     if (numInput.value === '') {
-      resultEl.innerHTML = 'Query should not be empty';
+      resultEl.innerHTML = 'Input can not be empty';
       return;
     }
     resultEl.innerHTML = 'Searching...';
@@ -44,7 +32,6 @@ search = async function () {
       spamEl.innerHTML = 'No';
       spamEl.style.backgroundColor = 'green';
     }
-    numInput.value = '';
   } catch (error) {
     resultEl.innerHTML = error.message;
   }

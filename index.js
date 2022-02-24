@@ -15,10 +15,12 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/index.html'));
 });
 
+const re = /^[0-9]{2,17}$/;
+
 app.get('/search', (req, res) => {
   const num = req.query.q;
-  if (isNaN(num)) {
-    res.status(400).json({ error: 'Query should be a number' });
+  if (!re.test(num)) {
+    res.status(400).json({ error: 'Query can not be empty, must be a number and between 2 to 17 digits long' });
     return;
   }
   const cc = req.query.cc || 'IN'; // hardcoded for now
