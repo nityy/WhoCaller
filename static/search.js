@@ -5,8 +5,12 @@ const re = /^[0-9]{2,17}$/;
 
 search = async function () {
   try {
+    if (numInput.value === '') {
+      resultEl.innerHTML = 'Input can not be empty';
+      return;
+    }
     if (!re.test(numInput.value)) {
-      resultEl.innerHTML = 'Input can not be empty, must be a number and between 2 to 17 digits long';
+      resultEl.innerHTML = 'Input must be a number and between 2 to 17 digits long';
       return;
     }
     if (numInput.value === '') {

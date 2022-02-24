@@ -19,8 +19,12 @@ const re = /^[0-9]{2,17}$/;
 
 app.get('/search', (req, res) => {
   const num = req.query.q;
+  if (!num) {
+    res.status(400).json({ error: 'Query can not be empty' });
+    return;
+  }
   if (!re.test(num)) {
-    res.status(400).json({ error: 'Query can not be empty, must be a number and between 2 to 17 digits long' });
+    res.status(400).json({ error: 'Query must be a number and between 2 to 17 digits long' });
     return;
   }
   const cc = req.query.cc || 'IN'; // hardcoded for now
@@ -38,6 +42,9 @@ app.get('/search', (req, res) => {
         throw new Error(response.status);
       }
       const result = response.data.data[0];
+      if (!result) {
+        throw new Error('No data returned by upstream server')
+      }
       res.status(200);
       if ('spamInfo' in result) {
         res.json({ message: 'Success', spamStatus: true, query: result.phones[0].e164Format });
