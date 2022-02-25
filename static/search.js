@@ -41,4 +41,9 @@ search = async function () {
   }
 }
 
-searchButton.addEventListener('click', search);
+searchButton.onclick = search;
+numInput.onkeyup = (e) => {
+  if (e.key == 'Enter') {
+    searchButton.click();
+  }
+}
