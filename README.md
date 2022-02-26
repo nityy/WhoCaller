@@ -5,7 +5,5 @@ Currently only India is supported. Unofficial API is also provided. More info to
 
 ## Todo
 
-- [ ] International support
 - [ ] Multiple tokens support; rotation b/w them
 - [ ] More info about spam (category, no. of spam reports)
-- [ ] Improve error handling

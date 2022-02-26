@@ -45,10 +45,11 @@ h2 {
     cursor: pointer;
     height: 30px;
     width: 100%;
-    border: 3px solid;
+    border: 2px solid;
     box-sizing: border-box;
     border-color: #c0ded9;
     font-size: 14px;
+    border-top: 0px;
 }
 
 #searchButton:disabled {
@@ -56,14 +57,26 @@ h2 {
 }
 
 #numinput {
-    background-color: #3b3a30;
-    border: 3px solid;
+    background-color: inherit;
+    border: 2px solid;
+    border-bottom: 0px;
+    border-top: 0px;
     border-color: #c0ded9;
     width: 100%;
     padding: 5px;
     box-sizing: border-box;
     outline: none;
-    color: white;
+    color: inherit;
     text-align: center;
     font-size: 15px;
+}
+
+#ccInput {
+    background: #3b3a30;
+    color: inherit;
+    border: 2px solid;
+    border-color: #c0ded9;
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
 }

@@ -27,7 +27,7 @@ app.get('/search', (req, res) => {
     res.status(400).json({ error: 'Query must be a number and between 2 to 17 digits long' });
     return;
   }
-  const cc = req.query.cc || 'IN'; // hardcoded for now
+  const cc = req.query.cc;
   const url = `https://search5-noneu.truecaller.com/v2/search?q=${num}&countryCode=${cc}&type=4&encoding=json`;
   const conf = {
     headers:
