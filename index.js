@@ -1,14 +1,11 @@
 const express = require('express');
 require('dotenv').config();
-const morgan = require('morgan');
 const path = require('path');
 const axios = require('axios').default;
 
 const app = express();
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(morgan('dev'));
 app.use('/static', express.static('static'))
 
 app.get('/', (req, res) => {
@@ -32,7 +29,7 @@ app.get('/search', (req, res) => {
   const conf = {
     headers:
     {
-      'authorization': `Bearer ${process.env.TOKEN}`,
+      'authorization': `Bearer ${process.env.ACCESS_TOKEN}`,
       'User-Agent': 'Truecaller/12.15.6 (Android;10)'
     }
   };
