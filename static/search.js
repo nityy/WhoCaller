@@ -16,7 +16,7 @@ search = async function () {
       throw new Error('Input must be a number and between 2 to 17 digits long');
     }
     resultEl.innerHTML = 'Searching...';
-    const response = await fetch(`/search?q=${numInput.value}&cc=${ccInput.value}`);
+    const response = await fetch(`/search/api?q=${numInput.value}&cc=${ccInput.value}`);
     const reply = await response.json();
     if (response.status !== 200) {
       throw new Error(reply.error);

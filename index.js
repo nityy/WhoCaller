@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 
 const re = /^[0-9]{2,17}$/;
 
-app.get('/search', (req, res) => {
+app.get('/search/api', (req, res) => {
   const num = req.query.q;
   if (!num) {
     res.status(400).json({ error: 'Query can not be empty' });

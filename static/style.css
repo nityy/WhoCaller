@@ -4,11 +4,12 @@ footer {
     bottom: 0%;
     width: 100%;
     z-index: -10;
+    font-size: 15px;
 }
 
 body {
     text-align: center;
-    font-family: Inter, Helvetica, Arial, sans-serif;
+    font-family: Inter, "Helvetica Neue", Helvetica , Arial, sans-serif;
     background-color:#3b3a30;
     color: white;
     font-size: 17px;
@@ -33,7 +34,7 @@ h2 {
 }
 
 .main {
-    max-width: 250px;
+    max-width: 280px;
 }
 
 #result {
@@ -43,13 +44,13 @@ h2 {
 #searchButton {
     background-color: #c0ded9;
     cursor: pointer;
-    height: 30px;
+    height: 32px;
     width: 100%;
     border: 2px solid;
     box-sizing: border-box;
     border-color: #c0ded9;
     font-size: 14px;
-    border-top: 0px;
+    border-radius: 0 0 5px 5px;
 }
 
 #searchButton:disabled {
@@ -79,5 +80,6 @@ h2 {
     font-size: 14px;
     width: 100%;
     outline: none;
-    padding: 2px 5px;
+    padding: 2px 7px;
+    border-radius: 5px 5px 0 0;
 }
