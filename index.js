@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/index.html'));
 });
 
-const re = /^[0-9]{2,17}$/;
+const re = /^[0-9]{3,17}$/;
 
 app.get('/search/api', (req, res) => {
   const num = req.query.q;
@@ -21,7 +21,7 @@ app.get('/search/api', (req, res) => {
     return;
   }
   if (!re.test(num)) {
-    res.status(400).json({ error: 'Query must be a number and between 2 to 17 digits long' });
+    res.status(400).json({ error: 'Query must be a number and between 3 to 17 digits long' });
     return;
   }
   const cc = req.query.cc;
@@ -39,14 +39,15 @@ app.get('/search/api', (req, res) => {
         throw new Error(response.status);
       }
       const result = response.data.data[0];
-      if (!result) {
-        throw new Error('No data returned by upstream server')
-      }
       res.status(200);
+      if (!('name' in result) || !result) {
+        res.json({ message: 'Not Found', query: result.phones[0].e164Format });
+        return;
+      }
       if ('spamInfo' in result) {
-        res.json({ message: 'Success', spamStatus: true, query: result.phones[0].e164Format });
+        res.json({ message: 'Found', spamStatus: true, query: result.phones[0].e164Format });
       } else {
-        res.json({ message: 'Success', spamStatus: false, query: result.phones[0].e164Format });
+        res.json({ message: 'Found', spamStatus: false, query: result.phones[0].e164Format });
       }
     }).catch((err) => {
       res.status(400).json({ error: `Something went wrong! ${err}` });
