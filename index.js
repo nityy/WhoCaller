@@ -1,18 +1,19 @@
 const express = require('express');
 require('dotenv').config();
-const path = require('path');
 const axios = require('axios').default;
+const { countries, categories } = require('./constants');
 
 const app = express();
-
 app.use(express.json());
-app.use('/static', express.static('static'))
+app.use('/static', express.static('static'));
+app.set('view engine', 'ejs');
+app.set('views', './');
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '/index.html'));
+  res.render('index.ejs', { countries: countries });
 });
 
-const re = /^[0-9]{3,17}$/;
+const re = /^[0-9]{3,15}$/;
 
 app.get('/search/api', (req, res) => {
   const num = req.query.q;
@@ -38,17 +39,35 @@ app.get('/search/api', (req, res) => {
       if (response.status !== 200) {
         throw new Error(response.status);
       }
+
       const result = response.data.data[0];
+      const {
+        phones: [
+          {
+            nationalFormat: nationalFormat
+          }
+        ],
+        spamInfo: spamInfo
+      } = result;
+
       res.status(200);
+
+      const returnObj = {};
+      returnObj['query'] = nationalFormat;
+
       if (!('name' in result) || !result) {
-        res.json({ message: 'Not Found', query: result.phones[0].e164Format });
+        returnObj['message'] = 'Not Found';
+        res.json(returnObj);
         return;
       }
-      if ('spamInfo' in result) {
-        res.json({ message: 'Found', spamStatus: true, query: result.phones[0].e164Format });
-      } else {
-        res.json({ message: 'Found', spamStatus: false, query: result.phones[0].e164Format });
-      }
+
+      returnObj['message'] = 'Found'
+      returnObj['spamStatus'] = spamInfo ? true : false;
+      returnObj['numReports'] = spamInfo?.spamScore;
+      returnObj['spamCategory'] = categories[spamInfo?.
+        spamCategories?.at(0)];
+
+      res.json(returnObj);
     }).catch((err) => {
       res.status(400).json({ error: `Something went wrong! ${err}` });
     })

@@ -6,6 +6,4 @@ Public Instance: [whocaller.fly.dev](https://whocaller.fly.dev/)
 
 ## Todo
 
-- [ ] Multiple tokens support; rotation b/w them
-- [ ] More info about spam (category, no. of spam reports)
 - [ ] PWA
