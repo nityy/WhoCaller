@@ -15,16 +15,16 @@
         <h2>Find out if it's a spam call</h2><br>
         <form id="form">
             <select id="ccInput">
-                <% for (let c of countries) { %>
-                    <option value="<%= c.cc %>" <% if (c.name=='India' ) {%> selected
+                <% for (const cc in countries) { %>
+                    <option value="<%= cc %>" <% if (countries[cc].name=='India' ) {%> selected
                         <% }; %> >
-                            <%= c.name %> (+<%= c.prefix %>)
+                            <%= countries[cc].name %> (+<%= countries[cc].prefix %>)
                     </option>
                     <% } %>
             </select>
             <input type="tel" id="numinput" required placeholder="Enter number..." maxlength="15"
                 title="Enter a number with atleast 3 digits" autofocus="true" autocomplete="off"
-                pattern="^[0-9]{3,15}$">
+                pattern="^\+?[\s0-9]{3,15}$">
             <button id="searchButton">Search</button>
         </form>
     </div>
