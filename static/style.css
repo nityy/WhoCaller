@@ -8,11 +8,11 @@ body {
 
 footer {
     position: fixed;
-    text-align: center;
     bottom: 0%;
     width: 100%;
     z-index: -10;
     font-size: 15px;
+    left: 0%;
 }
 
 a {
@@ -51,6 +51,11 @@ svg {
 
 #country {
     font-size: 13px;
+}
+
+#status {
+    padding: 3px;
+    border-radius: 4px;
 }
 
 .flex {

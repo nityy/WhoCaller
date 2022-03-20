@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+curl --no-progress-meter -A "Truecaller/12.15.6 (Android;10)" -H authorization:\ Bearer\ $CALLER_TOKEN https://search5-noneu.truecaller.com/v2/search?q=$1\&countryCode=IN\&type=4\&encoding=json | jq '.data[0] | {number: .phones[0].nationalFormat, name:.name, carrier: .phones[0].carrier, internetAddresses: [(.internetAddresses[]? | {(.service):.id})], location:(.addresses[0].city + ", " + .addresses[0].address),"reportedSpam?":(if (.phones[0].spamScore != null) then (.phones[0].spamScore|tostring + " times") else (false) end)}'
