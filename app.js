@@ -2,6 +2,7 @@ const express = require('express');
 require('dotenv').config();
 const axios = require('axios').default;
 const { countries, categories } = require('./constants');
+const url = 'https://search5-noneu.truecaller.com/v2/search';
 
 const app = express();
 app.use(express.json());
@@ -17,6 +18,8 @@ const re = /^\+?[\s0-9]{3,15}$/;
 
 app.get('/search/api', (req, res) => {
   const num = req.query.q;
+  const cc = req.query.cc;
+
   if (!num) {
     res.status(400).json({ error: 'Query can not be empty' });
     return;
@@ -25,13 +28,17 @@ app.get('/search/api', (req, res) => {
     res.status(400).json({ error: 'Query must be a number and between 3 to 17 digits long' });
     return;
   }
-  const cc = req.query.cc;
-  const url = `https://search5-noneu.truecaller.com/v2/search?q=${num}&countryCode=${cc}&type=4&encoding=json`;
+
   const conf = {
-    headers:
-    {
+    headers: {
       'authorization': `Bearer ${process.env.CALLER_TOKEN}`,
       'User-Agent': 'Truecaller/12.15.6 (Android;10)'
+    },
+    params: {
+      q: num,
+      countryCode: cc,
+      type: 4,
+      encoding: 'json'
     }
   };
   axios.get(url, conf)
@@ -66,8 +73,7 @@ app.get('/search/api', (req, res) => {
       returnObj['message'] = 'Found'
       returnObj['spamStatus'] = spamInfo ? true : false;
       returnObj['numReports'] = spamInfo?.spamScore;
-      returnObj['spamCategory'] = categories[spamInfo?.
-        spamCategories?.at(0)];
+      returnObj['spamCategory'] = categories[spamInfo?.spamCategories?.at(0)];
 
       res.json(returnObj);
     }).catch((err) => {

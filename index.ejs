@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Home - WhoCaller</title>
+    <title>WhoCaller</title>
     <script src="static/search.js" defer></script>
     <link rel="stylesheet" href="static/style.css">
     <meta charset="utf-8">
@@ -23,8 +23,8 @@
                     <% } %>
             </select>
             <input type="tel" id="numinput" required placeholder="Enter number..." maxlength="15"
-                title="Enter a number with atleast 3 digits" autofocus="true" autocomplete="off"
-                pattern="^\+?[\s0-9]{3,15}$">
+                title="Please enter a valid phone number without any hyphens and brackets" autofocus="true"
+                autocomplete="off" pattern="^\+?[\s0-9]{3,15}$">
             <button id="searchButton">Search</button>
         </form>
     </div>

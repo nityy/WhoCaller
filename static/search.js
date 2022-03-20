@@ -1,23 +1,22 @@
-const numInput = document.getElementById('numinput');
-const ccInput = document.getElementById('ccInput');
 const searchBtn = document.getElementById('searchButton');
 const spamDetailsEl = document.getElementById('spamDetails');
 const errorEl = document.getElementById('error');
 const resultEl = document.getElementById('result');
 const svgEl = document.getElementById('svg');
 const statusEl = document.getElementById('status');
-const re = /^(?<country>.*)\s\(\+\d*\)$/;
 
 search = async function () {
   try {
     searchBtn.disabled = true;
     searchBtn.innerText = 'Searching...';
-    resultEl.className = 'flex hide';
-    errorEl.classList.add('hide');
-    statusEl.classList = 'mb8';
-    const response = await fetch(`/search/api?q=${encodeURIComponent(numInput.value)}&cc=${ccInput.value}`);
+    resetStyles();
+
+    const query = encodeURIComponent(document.getElementById('numinput').value);
+    const cc = document.getElementById('ccInput').value
+
+    const response = await fetch(`/search/api?q=${query}&cc=${cc}`);
     if (response.status != 200) {
-      throw new Error(response.status);
+      throw new Error(`Fetch request failed with response code ${response.status}`);
     }
 
     const reply = await response.json();
@@ -55,8 +54,6 @@ function displayResults(res) {
   if (res.message == 'Not Found') {
     svgEl.innerHTML = svgs.notFound;
     statusEl.textContent = 'No reviews!'
-    statusEl.className = '';
-    spamDetailsEl.classList.add('hide');
   }
   if (res.spamStatus === true) {
     spamDetailsEl.classList.remove('hide');
@@ -64,14 +61,21 @@ function displayResults(res) {
     statusEl.classList.add('font-red');
     resultEl.classList.add('border-red');
     svgEl.innerHTML = svgs.spam;
-    document.getElementById('numReports').textContent = 'Reported ' + res.numReports + ' times';
+    document.getElementById('numReports').textContent = 'Reported ' +
+      res.numReports + ' times';
     document.getElementById('spamCategory').textContent = res.spamCategory;
   } else if (res.spamStatus === false) {
     statusEl.textContent = 'Not spam!'
     statusEl.classList.add('font-green');
     resultEl.classList.add('border-green');
-    spamDetailsEl.classList.add('hide');
     svgEl.innerHTML = svgs.notSpam;
   }
   resultEl.classList.remove('hide');
+}
+
+function resetStyles() {
+  errorEl.classList.add('hide');
+  resultEl.className = 'flex hide';
+  statusEl.className = 'mb8';
+  spamDetailsEl.classList.add('hide');
 }
