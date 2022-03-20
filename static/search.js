@@ -15,9 +15,7 @@ search = async function () {
     resultEl.className = 'flex hide';
     errorEl.classList.add('hide');
     statusEl.classList = 'mb8';
-
-    const country = (ccInput.selectedOptions[0].label.match(re)).groups.country;
-    const response = await fetch(`/search/api?q=${numInput.value}&cc=${ccInput.value}`);
+    const response = await fetch(`/search/api?q=${encodeURIComponent(numInput.value)}&cc=${ccInput.value}`);
     if (response.status != 200) {
       throw new Error(response.status);
     }
@@ -28,7 +26,7 @@ search = async function () {
       throw new Error(reply.error);
     }
 
-    displayResults(reply, country);
+    displayResults(reply);
   } catch (error) {
     console.log(error);
     errorEl.classList.remove('hide');
@@ -50,9 +48,9 @@ const svgs = {
   notFound: '<path fill="#CCD6DD" d="M17 27c-1.657 0-3-1.343-3-3v-4c0-1.657 1.343-3 3-3 .603-.006 6-1 6-5 0-2-2-4-5-4-2.441 0-4 2-4 3 0 1.657-1.343 3-3 3s-3-1.343-3-3c0-4.878 4.58-9 10-9 8 0 11 5.982 11 11 0 4.145-2.277 7.313-6.413 8.92-.9.351-1.79.587-2.587.747V24c0 1.657-1.343 3-3 3z"/><circle fill="#CCD6DD" cx="17" cy="32" r="3"/>'
 }
 
-function displayResults(res, country) {
+function displayResults(res) {
   document.getElementById('query').textContent = res.query;
-  document.getElementById('country').textContent = country;
+  document.getElementById('country').textContent = res.country;
 
   if (res.message == 'Not Found') {
     svgEl.innerHTML = svgs.notFound;

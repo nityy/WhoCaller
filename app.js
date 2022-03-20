@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
   res.render('index.ejs', { countries: countries });
 });
 
-const re = /^[0-9]{3,15}$/;
+const re = /^\+?[\s0-9]{3,15}$/;
 
 app.get('/search/api', (req, res) => {
   const num = req.query.q;
@@ -44,7 +44,8 @@ app.get('/search/api', (req, res) => {
       const {
         phones: [
           {
-            nationalFormat: nationalFormat
+            nationalFormat: nationalFormat,
+            countryCode: countryCode
           }
         ],
         spamInfo: spamInfo
@@ -54,6 +55,7 @@ app.get('/search/api', (req, res) => {
 
       const returnObj = {};
       returnObj['query'] = nationalFormat;
+      returnObj['country'] = countries[countryCode].name;
 
       if (!('name' in result) || !result) {
         returnObj['message'] = 'Not Found';
