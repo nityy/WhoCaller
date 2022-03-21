@@ -21,11 +21,11 @@ app.get('/search/api', (req, res) => {
   const cc = req.query.cc;
 
   if (!num) {
-    res.status(400).json({ error: 'Query can not be empty' });
+    res.status(400).json('Query can not be empty');
     return;
   }
   if (!re.test(num)) {
-    res.status(400).json({ error: 'Query must be a number and between 3 to 17 digits long' });
+    res.status(400).json('Query must be a number and between 3 to 17 digits long');
     return;
   }
 
@@ -43,11 +43,11 @@ app.get('/search/api', (req, res) => {
   };
   axios.get(url, conf)
     .then((response) => {
-      if (response.status !== 200) {
-        throw new Error(response.status);
-      }
-
       const result = response.data.data[0];
+      if (!result) {
+        res.status(200).json('No result returned');
+        return;
+      }
       const {
         phones: [
           {
@@ -64,20 +64,26 @@ app.get('/search/api', (req, res) => {
       returnObj['query'] = nationalFormat;
       returnObj['country'] = countries[countryCode].name;
 
-      if (!('name' in result) || !result) {
+      if (!('name' in result)) {
         returnObj['message'] = 'Not Found';
-        res.json(returnObj);
-        return;
+      } else {
+        returnObj['message'] = 'Found'
+        returnObj['spamStatus'] = spamInfo ? true : false;
+        returnObj['numReports'] = spamInfo?.spamScore;
+        returnObj['spamCategory'] = categories[spamInfo?.spamCategories?.at(0)];
       }
-
-      returnObj['message'] = 'Found'
-      returnObj['spamStatus'] = spamInfo ? true : false;
-      returnObj['numReports'] = spamInfo?.spamScore;
-      returnObj['spamCategory'] = categories[spamInfo?.spamCategories?.at(0)];
-
       res.json(returnObj);
     }).catch((err) => {
-      res.status(400).json({ error: `Something went wrong! ${err}` });
+      if (err.response) {
+        // if error is raised due to response code being outside of 2xx
+        res.status(500).json(err.message);
+      } else {
+        // if error raised due to other reasons like parsing errors, then log 
+        // the reason
+        console.log(err);
+        res.status(500).json(err.message);
+      }
+
     })
 })
 

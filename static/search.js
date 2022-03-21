@@ -15,14 +15,10 @@ search = async function () {
     const cc = document.getElementById('ccInput').value
 
     const response = await fetch(`/search/api?q=${query}&cc=${cc}`);
-    if (response.status != 200) {
-      throw new Error(`Fetch request failed with response code ${response.status}`);
-    }
-
     const reply = await response.json();
 
-    if (error in reply) {
-      throw new Error(reply.error);
+    if (response.status != 200 || !('message' in reply)) {
+      throw new Error(reply);
     }
 
     displayResults(reply);
